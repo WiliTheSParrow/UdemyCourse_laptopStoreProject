@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
 
         fs.readFile(`${__dirname}/templates/template-laptop.html`, 'utf-8', (err, data) => {
             const laptop = laptopData[id];
-            let output = data.replace('{%PRODUCTNAME%}', laptop.productName);
+            let output = data.replace(/{%PRODUCTNAME%}/g, laptop.productName);
             // ! We have to do it from the output bef for the other ones.
             output = output.replace(/{%IMAGE%}/g, laptop.image);
             output = output.replace(/{%PRICE%}/g, laptop.price);
