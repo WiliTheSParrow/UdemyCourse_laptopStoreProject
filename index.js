@@ -22,7 +22,22 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, {
             'Content-type': 'text/html'
         });
-        res.end(`This is the LAPTOP page for laptop ${id}!`);
+
+        fs.readFile(`${__dirname}/templates/template-laptop.html`, 'utf-8', (err, data) => {
+            const laptop = laptopData[id];
+            let output = data.replace('{%PRODUCTNAME%}', laptop.productName);
+            // ! We have to do it from the output bef for the other ones.
+            output = output.replace(/{%IMAGE%}/g, laptop.image);
+            output = output.replace(/{%PRICE%}/g, laptop.price);
+            output = output.replace(/{%SCREEN%}/g, laptop.screen);
+            output = output.replace(/{%CPU%}/g, laptop.cpu);
+            output = output.replace(/{%STORAGE%}/g, laptop.storage);
+            output = output.replace(/{%RAM%}/g, laptop.ram);
+            output = output.replace(/{%DESCRIPTION%}/g, laptop.description);
+            // sending data to the page
+            res.end(output);
+        });
+
     } else {
         res.writeHead(404, {
             'Content-type': 'text/html'
